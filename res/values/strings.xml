@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">XlistView</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="xlistview_header_hint_normal">下拉可以刷新…</string>
+    <string name="xlistview_header_hint_loading">加载中…</string>
+    <string name="xlistview_footer_hint_normal">上拉看更多…</string>
+    <string name="xlistview_header_last_time">最近更新于: </string>
+    <string name="xlistview_footer_hint_ready">松开载入更多</string>
+    <string name="xlistview_header_hint_ready">松开刷新数据</string>
+    <string name="xlistview_nomoredata">没有更多了</string>
+
+    
+    <string name="jar_webserviceurl">http://www.nngaj.gov.cn/NNMobileService/info.asmx</string>
+    <string name="jar_webservicenamespace">http://www.nngaj.gov.cn</string>
+    <string name="jar_webserviceuser">admin</string>
+    <string name="jar_webservicepwd">123456</string>
+
+
+    <string name="modelid2">9999d843-6195-43f4-8ccb-0a223ecc8a02</string> <!-- 警方公告 -->
+    <string name="modelid">9f666f6d-d07d-4945-a4ca-11fbf93b021d</string> <!-- 公安法规 -->
+</resources>
