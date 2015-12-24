@@ -28,7 +28,7 @@ import com.google.gson.reflect.TypeToken;
 import com.me.maxwin.view.XListView;
 import com.me.maxwin.view.XListView.IXListViewListener;
 
-public class ListActivity extends Activity {
+public class XScrollViewListActivity extends Activity {
 
 	private int mPageSize = 20;// 每页20条数据
 	private int mCurrent = 1;// 当前页码
@@ -44,7 +44,7 @@ public class ListActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_listview);
+		setContentView(R.layout.activity_scrollview_listview);
 		findView();
 		initData(true, true);
 	}
@@ -154,7 +154,7 @@ public class ListActivity extends Activity {
 	private class FGetListData extends AsyncTask<String, Void, String> {
 		@Override
 		protected void onPreExecute() {
-			ProgressDialogUtils.showProgressDialog(ListActivity.this, "正在访问网络,请稍后...");
+			ProgressDialogUtils.showProgressDialog(XScrollViewListActivity.this, "正在访问网络,请稍后...");
 			super.onPreExecute();
 		}
 
