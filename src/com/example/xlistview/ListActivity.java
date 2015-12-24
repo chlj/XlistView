@@ -30,7 +30,7 @@ import com.me.maxwin.view.XListView.IXListViewListener;
 
 public class ListActivity extends Activity {
 
-	private int mPageSize = 10;// 每页10条数据
+	private int mPageSize = 20;// 每页20条数据
 	private int mCurrent = 1;// 当前页码
 	private static final int GETLIST = 1;
 	private List<GetInfoByModuleModel> list = new ArrayList<GetInfoByModuleModel>();
@@ -120,7 +120,8 @@ public class ListActivity extends Activity {
 							listview.setPullLoadEnable(false, "nomoredata");// 没有更多数据
 																			// （是显示在底部的）
 						} else {
-							listview.setPullLoadEnable(true, ""); // 允许上滑 加载更多
+							// listview.setPullLoadEnable(true, ""); // 允许上滑 加载更多
+							
 						}
 
 					} else {
@@ -135,14 +136,11 @@ public class ListActivity extends Activity {
 					e.printStackTrace();
 
 				} finally {
-//					if (mIsHeader) {
-//						listview.stopRefresh();
-//					} else {
-//						listview.stopLoadMore();
-//					}
-					
-					listview.stopRefresh();
-					listview.stopLoadMore();
+					if (mIsHeader) {
+						listview.stopRefresh();
+					} else {
+						listview.stopLoadMore();
+					}
 				}
 				break;
 

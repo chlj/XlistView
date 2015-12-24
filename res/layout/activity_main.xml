@@ -10,6 +10,6 @@
         android:id="@+id/btn1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="获取列表" />
+        android:text="获取列表_底部栏显示没有更多数据_带点击事件" />
 
 </LinearLayout>

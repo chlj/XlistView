@@ -202,9 +202,9 @@ public class XListView extends ListView implements OnScrollListener {
 		}
 
 		if (isShowFoot) {
-			mFooterView.setVisibility(View.VISIBLE); // 没有更多数据
+			mFooterView.setVisibility(View.VISIBLE); 
 		} else {
-			mFooterView.setVisibility(View.GONE);
+			mFooterView.setVisibility(View.GONE);// 没有更多数据
 		}
 
 		mFooterView.setState2(XListViewFooter.STATE_NORMAL, mClick);
