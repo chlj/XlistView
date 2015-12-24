@@ -323,7 +323,7 @@ public class XListView extends ListView implements OnScrollListener {
 			finalHeight = mHeaderViewHeight;
 		}
 		mScrollBack = SCROLLBACK_HEADER;
-		mScroller.startScroll(0, height, 0, finalHeight - height, SCROLL_DURATION);
+		mScroller.startScroll(0, height, 0, finalHeight - height, SCROLL_DURATION); //下拉距离 回弹
 		// trigger computeScroll
 		invalidate();
 	}
@@ -364,7 +364,8 @@ public class XListView extends ListView implements OnScrollListener {
 	public boolean onTouchEvent(MotionEvent ev) {
 
 		if (mPullLoading || mPullRefreshing) {
-			return super.onTouchEvent(ev);
+			return super.onTouchEvent(ev);   //返回
+			
 		}
 		if (mLastY == -1) {
 			mLastY = ev.getRawY();
@@ -374,15 +375,29 @@ public class XListView extends ListView implements OnScrollListener {
 			mLastY = ev.getRawY();
 			break;
 		case MotionEvent.ACTION_MOVE:
-			final float deltaY = ev.getRawY() - mLastY;
+		    float deltaY = ev.getRawY() - mLastY;
 			mLastY = ev.getRawY();
 			if (getFirstVisiblePosition() == 0 && (mHeaderView.getVisiableHeight() > 0 || deltaY > 0)) {
 				// the first item is showing, header has shown or pull down.
-				updateHeaderHeight(deltaY / OFFSET_RADIO);
-				invokeOnScrolling();
+			
+				//允许下拉刷新
+				if(mEnablePullRefresh){
+					updateHeaderHeight(deltaY / OFFSET_RADIO);
+					invokeOnScrolling();
+				}
+				else{
+					
+				}
+				
 			} else if (getLastVisiblePosition() == mTotalItemCount - 1 && (mFooterView.getBottomMargin() > 0 || deltaY < 0)) {
 				// last item, already pulled up or want to pull up.
-				updateFooterHeight(-deltaY / OFFSET_RADIO);
+				
+				//允许上拉加载更多
+				if(mEnablePullLoad){
+					updateFooterHeight(-deltaY / OFFSET_RADIO);
+				}
+				
+				
 			}
 			break;
 		default:
@@ -443,11 +458,15 @@ public class XListView extends ListView implements OnScrollListener {
 
 	@Override
 	public void computeScroll() {
+		
 		if (mScroller.computeScrollOffset()) {
+			Log.i("mm","scroll_1");
 			if (mScrollBack == SCROLLBACK_HEADER) {
 				mHeaderView.setVisiableHeight(mScroller.getCurrY());
+				Log.i("mm","scroll_7");
 			} else {
 				mFooterView.setBottomMargin(mScroller.getCurrY());
+				Log.i("mm","scroll_8");
 			}
 			postInvalidate();
 			invokeOnScrolling();
@@ -463,17 +482,22 @@ public class XListView extends ListView implements OnScrollListener {
 	@Override
 	public void onScrollStateChanged(AbsListView view, int scrollState) {
 		if (mScrollListener != null) {
+			Log.i("mm","scroll_2");
 			mScrollListener.onScrollStateChanged(view, scrollState);
 		}
+		Log.i("mm","scroll_3");
 	}
 
 	@Override
 	public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
 		// send to user's listener
+		
 		mTotalItemCount = totalItemCount;
 		if (mScrollListener != null) {
+			Log.i("mm","scroll_4");
 			mScrollListener.onScroll(view, firstVisibleItem, visibleItemCount, totalItemCount);
 		}
+		Log.i("mm","scroll_5");
 	}
 
 	public void setXListViewListener(IXListViewListener l) {
@@ -485,6 +509,7 @@ public class XListView extends ListView implements OnScrollListener {
 	 * onXScrolling when header/footer scroll back.
 	 */
 	public interface OnXScrollListener extends OnScrollListener {
+	
 		public void onXScrolling(View view);
 	}
 

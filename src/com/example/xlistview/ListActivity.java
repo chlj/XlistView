@@ -19,7 +19,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import cn.trinea.android.common.util.ProgressDialogUtils;
 import cn.trinea.android.common.webservice.WebServiceKsoapUtils;
@@ -39,6 +38,9 @@ public class ListActivity extends Activity {
 	private XListView listview;
 	private ItemAdapter adapter;
 
+	private boolean mIsFirst = true;
+	private boolean mIsHeader = true;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -51,16 +53,15 @@ public class ListActivity extends Activity {
 		listview = (XListView) findViewById(R.id.listview);
 
 		adapter = new ItemAdapter(getApplicationContext());
-
-		// listview.addHeaderView(new RelativeLayout(getApplicationContext()));
 		listview.setAdapter(adapter);
-		listview.setPullRefreshEnable(true);
+		listview.setPullRefreshEnable(false);
+		
 		listview.setPullLoadEnable(true);
+		
 		listview.setXListViewListener(new IXListViewListener() {
-
 			@Override
 			public void onRefresh() {
-				initData(true, true); //bug
+				initData(true, true);
 
 			}
 
@@ -72,8 +73,6 @@ public class ListActivity extends Activity {
 		});
 	}
 
-	private boolean mIsHeader = true;
-
 	/**
 	 * 
 	 * @param isFirst
@@ -82,17 +81,14 @@ public class ListActivity extends Activity {
 	 *            true刷新 ， false加载更多
 	 */
 	private void initData(boolean isFirst, boolean isHeader) {
-
+		mIsHeader = isHeader;
+		mIsFirst = isFirst;
 		if (isFirst) {
-			list.clear();
 			mCurrent = 1;
 		}
-
 		if (!isHeader) {
 			mCurrent = mCurrent + 1;
 		}
-
-		mIsHeader = isHeader;
 		Log.i("xx", "mCurrent=" + mCurrent);
 		new FGetListData().execute();
 	}
@@ -110,10 +106,12 @@ public class ListActivity extends Activity {
 					Gson gson = new Gson();
 					List<GetInfoByModuleModel> lst = gson.fromJson(jsonString, new TypeToken<List<GetInfoByModuleModel>>() {
 					}.getType());
-					
 
 					if (lst != null && lst.size() > 0) {
 						Log.i("xx", "lst.size=" + lst.size());
+						if (mIsFirst) {
+							list.clear(); // 刷新 则先清空数据 防止快速下拉 出现bug
+						}
 						list.addAll(lst);
 						adapter.notifyDataSetChanged();
 
@@ -137,11 +135,14 @@ public class ListActivity extends Activity {
 					e.printStackTrace();
 
 				} finally {
-					if (mIsHeader) {
-						listview.stopRefresh();
-					} else {
-						listview.stopLoadMore();
-					}
+//					if (mIsHeader) {
+//						listview.stopRefresh();
+//					} else {
+//						listview.stopLoadMore();
+//					}
+					
+					listview.stopRefresh();
+					listview.stopLoadMore();
 				}
 				break;
 
@@ -224,6 +225,11 @@ public class ListActivity extends Activity {
 				holder = (GViewHolder) convertView.getTag();
 			}
 
+			if (list != null && list.size() > 0) {
+
+			} else {
+				Log.i("xx", "is null");
+			}
 			holder.txt.setText(list.get(position).getTitle());
 
 			return convertView;

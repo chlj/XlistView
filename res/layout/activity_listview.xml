@@ -9,7 +9,13 @@
     <com.me.maxwin.view.XListView
         android:id="@+id/listview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent"
+        android:cacheColorHint="@android:color/transparent"
+        android:divider="@null"
+        android:fadingEdge="none"
+        android:listSelector="@android:color/transparent"
+        android:overScrollMode="never"
+        android:scrollbars="none" >
     </com.me.maxwin.view.XListView>
 
 </LinearLayout>
